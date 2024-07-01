@@ -1,30 +1,23 @@
 import React from 'react';
-import { Route, Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import authService from '../services/authService';
 
-const ProtectedRoute = ({ component: Component, roles, ...rest }) => {
+const ProtectedRoute = ({ roles }) => {
   const currentUser = authService.getCurrentUser();
-  
-  return (
-    <Route
-      {...rest}
-      render={props => {
-        if (!currentUser) {
-          // Not logged in, redirect to login
-          return <Navigate to="/login" />;
-        }
 
-        // Check if the route is restricted by role
-        if (roles && roles.indexOf(currentUser.roleId) === -1) {
-          // Role not authorized so redirect to home page
-          return <Navigate to={{ pathname: '/' }} />;
-        }
+  if (!currentUser) {
+    // No está conectado, redirigir al login
+    return <Navigate to="/login" />;
+  }
 
-        // Authorized, so return the component
-        return <Component {...props} />;
-      }}
-    />
-  );
+  if (roles && roles.indexOf(currentUser.roleId) === -1) {
+    // Rol no autorizado, redirigir a la página principal
+    return <Navigate to="/" />;
+  }
+
+  // Autorizado, retornar el componente deseado
+  return <Outlet />;
 };
 
 export default ProtectedRoute;
+

@@ -5,15 +5,17 @@ const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [roleId] = useState(2); // Asumiendo que 2 es el rol de cliente
+  const [roleId] = useState(2); // Asumiendo que 2 es el rol de trabajadores
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
+      console.log(`Registering with username: ${username}, email: ${email}, role_id: ${roleId}`);
       await authService.register(username, password, email, roleId);
       alert('Registration successful!');
     } catch (error) {
-      alert(`Error registering user: ${error.response.data.message}`);
+      console.error('Error registering user:', error);
+      alert(`Error registering user: ${error.response ? error.response.data.message : error.message}`);
     }
   };
 

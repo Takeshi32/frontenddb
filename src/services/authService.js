@@ -3,74 +3,60 @@ import axios from 'axios';
 const API_URL = 'http://localhost:5000/api/auth';
 
 const register = (username, password, email, role_id) => {
-  return axios.post(`${API_URL}/register`, { username, password, email, role_id });
+  console.log(`Sending register request with username: ${username}, email: ${email}, role_id: ${role_id}`);
+  return axios.post(`${API_URL}/register`, { username, password, email, role_id })
+    .then(response => {
+      console.log('Registration response:', response.data);
+      return response.data;
+    })
+    .catch(error => {
+      console.error('Error during registration:', error.response ? error.response.data : error.message);
+      throw error;
+    });
 };
 
 const login = (username, password) => {
+  console.log(`Sending login request with username: ${username}`);
   return axios.post(`${API_URL}/login`, { username, password })
     .then(response => {
-      if (response.data.token) {
-        localStorage.setItem('user', JSON.stringify(response.data));
-      }
+      console.log('Login response:', response.data);
       return response.data;
+    })
+    .catch(error => {
+      console.error('Error during login:', error.response ? error.response.data : error.message);
+      throw error;
     });
 };
 
 const logout = () => {
+  console.log('Logging out');
   localStorage.removeItem('user');
 };
 
 const resetPassword = (email) => {
-  return axios.post(`${API_URL}/reset-password`, { email });
+  console.log(`Sending reset password request for email: ${email}`);
+  return axios.post(`${API_URL}/reset-password`, { email })
+    .then(response => {
+      console.log('Reset password response:', response.data);
+      return response.data;
+    })
+    .catch(error => {
+      console.error('Error during password reset:', error.response ? error.response.data : error.message);
+      throw error;
+    });
 };
 
 const setNewPassword = (token, newPassword) => {
-  return axios.post(`${API_URL}/set-new-password`, { token, newPassword });
-};
-
-const getUserProfile = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  return axios.get(`${API_URL}/profile`, {
-    headers: {
-      'Authorization': `Bearer ${user.token}`
-    }
-  }).then(response => response.data);
-};
-
-const getRoles = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  return axios.get(`${API_URL}/roles`, {
-    headers: {
-      'Authorization': `Bearer ${user.token}`
-    }
-  }).then(response => response.data);
-};
-
-const getPermissions = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  return axios.get(`${API_URL}/permissions`, {
-    headers: {
-      'Authorization': `Bearer ${user.token}`
-    }
-  }).then(response => response.data);
-};
-
-const assignPermission = (roleId, permissionId) => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  return axios.post(`${API_URL}/assign-permission`, { roleId, permissionId }, {
-    headers: {
-      'Authorization': `Bearer ${user.token}`
-    }
-  });
-};
-
-const createRole = (roleName) => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  return axios.post(`${API_URL}/roles`, { role_name: roleName }, {
-    headers: {
-      'Authorization': `Bearer ${user.token}`
-    }
-  });
+  console.log('Sending set new password request');
+  return axios.post(`${API_URL}/set-new-password`, { token, newPassword })
+    .then(response => {
+      console.log('Set new password response:', response.data);
+      return response.data;
+    })
+    .catch(error => {
+      console.error('Error during setting new password:', error.response ? error.response.data : error.message);
+      throw error;
+    });
 };
 
 const authService = {
@@ -78,12 +64,7 @@ const authService = {
   login,
   logout,
   resetPassword,
-  setNewPassword,
-  getUserProfile,
-  getRoles,
-  getPermissions,
-  assignPermission,
-  createRole
+  setNewPassword
 };
 
 export default authService;

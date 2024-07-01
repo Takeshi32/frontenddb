@@ -26,20 +26,22 @@ const AppRoutes = () => (
     <Route path="/register" element={<Register />} />
     <Route path="/reset-password" element={<ResetPassword />} />
     <Route path="/set-new-password/:token" element={<SetNewPassword />} />
-    <ProtectedRoute path="/profile" element={<UserProfile />} />
-    <ProtectedRoute path="/make-reservation" element={<MakeReservation />} />
-    <ProtectedRoute path="/reservations" element={<UserReservations />} />
-    <ProtectedRoute path="/add-table" element={<AddTable />} roles={[1, 2]} />
-    <ProtectedRoute path="/tables" element={<TableList />} roles={[1, 2]} />
-    <ProtectedRoute path="/edit-table/:id" element={<EditTable />} roles={[1, 2]} />
-    <ProtectedRoute path="/assign-table" element={<AssignTable />} roles={[1, 2]} />
-    <ProtectedRoute path="/admin-reservations" element={<AdminReservations />} roles={[1, 2]} />
-    <ProtectedRoute path="/edit-reservation/:id" element={<EditReservation />} roles={[1, 2]} />
-    <ProtectedRoute path="/reports/daily" element={<DailyReport />} roles={[1, 2]} />
-    <ProtectedRoute path="/reports/weekly" element={<WeeklyReport />} roles={[1, 2]} />
-    <ProtectedRoute path="/reports/monthly" element={<MonthlyReport />} roles={[1, 2]} />
-    <ProtectedRoute path="/manage-roles" element={<ManageRoles />} roles={[1]} />
-    <ProtectedRoute path="/manage-permissions" element={<ManagePermissions />} roles={[1]} />
+    <Route element={<ProtectedRoute />}>
+      <Route path="/profile" element={<UserProfile />} />
+      <Route path="/make-reservation" element={<MakeReservation />} />
+      <Route path="/reservations" element={<UserReservations />} />
+      <Route path="/add-table" element={<AddTable roles={[1, 2]} />} />
+      <Route path="/tables" element={<TableList roles={[1, 2]} />} />
+      <Route path="/edit-table/:id" element={<EditTable roles={[1, 2]} />} />
+      <Route path="/assign-table" element={<AssignTable roles={[1, 2]} />} />
+      <Route path="/admin-reservations" element={<AdminReservations roles={[1, 2]} />} />
+      <Route path="/edit-reservation/:id" element={<EditReservation roles={[1, 2]} />} />
+      <Route path="/reports/daily" element={<DailyReport roles={[1, 2]} />} />
+      <Route path="/reports/weekly" element={<WeeklyReport roles={[1, 2]} />} />
+      <Route path="/reports/monthly" element={<MonthlyReport roles={[1, 2]} />} />
+      <Route path="/manage-roles" element={<ManageRoles roles={[1]} />} />
+      <Route path="/manage-permissions" element={<ManagePermissions roles={[1]} />} />
+    </Route>
   </Routes>
 );
 
