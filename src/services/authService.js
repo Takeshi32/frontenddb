@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api/auth';
 
-const register = (username, password, email, role_id) => {
+const register = (username, password, email, role_id = 3) => {
   console.log(`Sending register request with username: ${username}, email: ${email}, role_id: ${role_id}`);
   return axios.post(`${API_URL}/register`, { username, password, email, role_id })
     .then(response => {
